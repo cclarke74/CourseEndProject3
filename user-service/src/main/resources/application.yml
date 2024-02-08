@@ -1,0 +1,39 @@
+
+# Tomcat Server
+server:
+  port: 8101
+
+# Logger
+logging:
+  level:
+    web: DEBUG
+    '[com.clairclarke.cabproject]': DEBUG
+
+  pattern:
+    file: "%d [%level] %c{1.} [%t] %m%n"
+  file:
+    path: /logs/
+    name: user_service.log
+
+
+spring:
+  application.name: users-service
+    # Jackson Settings
+  jackson:
+      date-format: "yyyy-MM-dd"
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: root
+    password: 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8781/eureka

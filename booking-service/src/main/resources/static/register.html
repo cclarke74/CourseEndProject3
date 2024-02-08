@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>User Registration</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+    }
+    .center {
+      margin: auto;
+      width: 50%;
+      border: 3px solid #ffa500;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h3 {
+        color: #ffa500;
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    input[type="button"] {
+        width: 100%;
+        background-color: #ffa500;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    input[type="button"]:hover {
+        background-color: #ff7b00;
+    }
+    p#usermessage {
+        margin-top: 15px;
+        color: #006400;
+        font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="center">
+  <h3>User Registration</h3>
+  <form id="registrationForm">
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstName" name="firstName" placeholder="First Name">
+
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName" name="lastName" placeholder="Last Name">
+
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" placeholder="Username">
+
+    <input type="password" id="password" name="password" value="Password" hidden="">
+
+    <label for="birth">Date of Birth</label>
+    <input type="date" id="birth" name="birth">
+
+    <input type="text" id="status" name="status" value="Status" hidden="">
+    <input type="text" id="userType" name="userType" value="USER" hidden="">
+
+    <input type="button" value="Register" onclick="submitRegistrationForm()">
+  </form>
+
+  <p id="usermessage"></p>
+</div>
+
+<script>
+  function submitRegistrationForm() {
+      // Collect form data manually
+      const formData = {
+          firstName: document.getElementById('firstName').value,
+          lastName: document.getElementById('lastName').value,
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value,
+          birth: document.getElementById('birth').value,
+          status: document.getElementById('status').value,
+          userType: document.getElementById('userType').value
+      };
+
+      // Fetch API to send the POST request
+      fetch('http://localhost:8080/api/users/create', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+      })
+      .then(response => {
+          if (response.status === 201) {
+              document.getElementById('usermessage').innerHTML = "User registration successful";
+              console.log("success");
+          } else {
+              document.getElementById('usermessage').innerHTML = "User registration failed";
+              throw new Error('Network response was not ok');
+          }
+      })
+      .catch(error => {
+          // Handle error
+          console.error('Error:', error);
+          // Update UI with error message if needed
+      });
+  }
+</script>
+
+</body>
+</html>

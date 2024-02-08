@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance-based Price Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-color: #ffa500;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Distance-based Price Calculator</h2>
+    <form id="priceCalculatorForm">
+        <label for="distance">Distance (in kilometers):</label>
+        <input type="text" id="distance" name="distance" placeholder="Enter distance..." required>
+        <input type="submit" value="Calculate Price">
+    </form>
+    <div id="result"></div>
+</div>
+
+<script>
+    document.getElementById("priceCalculatorForm").onsubmit = function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Get the value of distance input
+        var distance = parseFloat(document.getElementById("distance").value);
+
+        // Calculate price based on distance
+        var price = calculatePrice(distance);
+
+        // Display the result
+        document.getElementById("result").innerHTML = "<p>The price for the distance of " + distance + " km is: $" + price.toFixed(2) + "</p>";
+    };
+
+    function calculatePrice(distance) {
+        // Here, you can define your pricing logic based on the distance
+        // For simplicity, let's assume the price is $0.10 per kilometer
+        return distance * 0.10;
+    }
+</script>
+
+</body>
+</html>

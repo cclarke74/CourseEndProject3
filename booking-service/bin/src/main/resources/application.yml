@@ -1,0 +1,74 @@
+
+
+# Tomcat Server
+server:
+  port: 8100
+
+# Logger
+logging:
+  level:
+    web: DEBUG
+    '[com.clairclarke.cabproject]': DEBUG
+
+  pattern:
+    file: "%d [%level] %c{1.} [%t] %m%n"
+  file:
+    path: /logs/
+    name: booking_service.log
+
+
+spring:
+  application.name: booking-service
+  # Jackson Settings
+  jackson:
+    date-format: "yyyy-MM-dd"
+  datasource:
+    url: jdbc:mysql://localhost:3306/booking_service?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+#Eureka client config
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8781/eureka
+
+
+
+
+#Actuator properties
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  health:
+    circuitbreakers:
+      enabled: 'true'
+  endpoint:
+    health:
+      show-details: always
+
+
+#Resilience 4j properties
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventory:
+        automaticTransitionFromOpenToHalfOpenEnabled: 'true'
+        failureRateThreshold: '50'
+        slidingWindowType: COUNT_BASED
+        event-consumer-buffer-size: '10'
+        registerHealthIndicator: 'true'
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: '3'
+        slidingWindowSize: '5'
+

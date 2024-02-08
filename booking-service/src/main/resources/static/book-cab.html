@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Book Cab</title>
+    <style>
+        .center {
+          margin: auto;
+          width: 60%;
+          border: 3px solid #ffa500;
+          padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <h3>Book A Cab</h3>
+    <form id="bookingForm">
+        <label for="userName">User Name</label>
+        <input type="text" id="userName" name="userName" placeholder="User Name">
+        <br><br>
+
+        <label for="pickupLocation">Pickup Location</label>
+        <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Home">
+        <br><br>
+
+        <label for="dropoffLocation">Drop off Location</label>
+        <input type="text" id="dropoffLocation" name="dropoffLocation" placeholder="Work">
+        <br><br>
+
+        <label for="pickupTime">Pickup Time</label>
+        <input type="text" id="pickupTime" name="pickupTime" placeholder="Pickup Time">
+        <br><br>
+
+        <label for="cabType">Cab Type</label>
+        <input type="text" id="cabType" name="cabType" placeholder="Cab Type">
+        <br><br>
+
+
+        <input type="button" value="Submit" onclick="submitForm()">
+    </form>
+
+    <p id="bookingcomplete"></p>
+</div>
+
+<script>
+    function submitForm() {
+
+    const formData = {
+    userName: document.getElementById('userName').value,
+    pickupLocation: document.getElementById('pickupLocation').value,
+    dropoffLocation: document.getElementById('dropoffLocation').value,
+    pickupTime: document.getElementById('pickupTime').value,
+    cabType: document.getElementById('cabType').value,
+};
+
+// Assuming the server expects JSON data
+const requestOptions = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+};
+
+// Replace the URL with your actual endpoint
+const apiUrl = 'http://localhost:8080/api/booking/book';
+
+// Make the POST request
+fetch(apiUrl, requestOptions)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        document.getElementById('bookingcomplete').innerHTML = data.message
+
+        // Handle the response data as needed
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors
+    });
+
+
+    }
+</script>
+
+</body>
+</html>

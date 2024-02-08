@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>User Registration</title>
+  <style>
+    .center {
+      margin: auto;
+      width: 60%;
+      border: 3px solid #ffa500;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="center">
+  <h3>User Registration</h3>
+  <form id="registrationForm">
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstName" name="firstName" placeholder="First Name">
+    <br><br>
+
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName" name="lastName" placeholder="Last Name">
+    <br><br>
+
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" placeholder="Username">
+    <br><br>
+
+    <input type="password" id="password" name="password" value="Password" hidden="">
+
+    <label for="birth">Date of Birth</label>
+    <input type="date" id="birth" name="birth">
+    <br><br>
+
+    <input type="text" id="status" name="status" value="Status" hidden="">
+    <input type="text" id="userType" name="userType" value="USER" hidden="">
+
+    <input type="button" value="Register" onclick="submitRegistrationForm()">
+  </form>
+
+  <p id="usermessage"></p>
+</div>
+
+<script>
+  function submitRegistrationForm() {
+      // Collect form data manually
+      const formData = {
+          firstName: document.getElementById('firstName').value,
+          lastName: document.getElementById('lastName').value,
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value,
+          birth: document.getElementById('birth').value,
+          status: document.getElementById('status').value,
+          userType: document.getElementById('userType').value
+      };
+
+      // Fetch API to send the POST request
+      fetch('http://localhost:8080/api/users/create', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+      })
+ .then(response => {
+    if (response.status === 201) {
+        document.getElementById('usermessage').innerHTML = "User registration successful"
+        console.log("succes")
+    }else{
+            document.getElementById('usermessage').innerHTML = "User registration failed"
+
+        throw new Error('Network response was not ok');
+    }
+
+
+
+
+})
+.then(data => {
+    // Handle success
+     console.log('Response Status Code:', "statusCode");
+    // Update UI as needed
+})
+.catch(error => {
+    // Handle error
+    console.error('Error:', error);
+    // Update UI with error message if needed
+});
+
+  }
+</script>
+
+</body>
+</html>

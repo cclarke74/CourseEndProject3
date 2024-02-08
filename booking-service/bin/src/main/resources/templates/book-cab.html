@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Book Cab</title>
+    <style>
+        .center {
+          margin: auto;
+          width: 60%;
+          border: 3px solid #ffa500;
+          padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <h3>Book A Cab</h3>
+    <form id="bookingForm">
+        <label for="userName">User Name</label>
+        <input type="text" id="userName" name="userName" placeholder="User Name">
+        <br><br>
+
+        <label for="pickupLocation">Pickup Location</label>
+        <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Home">
+        <br><br>
+
+        <label for="dropoffLocation">Dropoff Location</label>
+        <input type="text" id="dropoffLocation" name="dropoffLocation" placeholder="Work">
+        <br><br>
+
+        <label for="pickupTime">Pickup Time</label>
+        <input type="text" id="pickupTime" name="pickupTime" placeholder="Pickup Time">
+        <br><br>
+
+        <label for="cabType">Cab Type</label>
+        <input type="text" id="cabType" name="cabType" placeholder="Cab Type">
+        <br><br>
+
+        <label for="vehicleReg">Vehicle Registration</label>
+        <input type="text" id="vehicleReg" name="vehicleReg" placeholder="Vehicle Registration">
+        <br><br>
+
+        <input type="button" value="Submit" onclick="submitForm()">
+    </form>
+
+    <p id="booking-succes"></p>
+</div>
+
+<script>
+    function submitForm() {
+        // Collect form data manually
+        const formData = {
+            userName: document.getElementById('userName').value,
+            pickupLocation: document.getElementById('pickupLocation').value,
+            dropoffLocation: document.getElementById('dropoffLocation').value,
+            pickupTime: document.getElementById('pickupTime').value,
+            cabType: document.getElementById('cabType').value,
+            vehicleReg: document.getElementById('vehicleReg').value
+        };
+
+        // Fetch API to send the POST request
+        fetch('http://localhost:8080/api/booking/book', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+.then(data => {
+    // Handle success
+    console.log(data.message);
+
+    const bookingSuccessMessage = "Booking Success";
+    const userNotFoundMessage = "404 Not Found from GET http://192.168.0.113:36861/api/users/search_user_name";
+
+    if (data.message.includes(userNotFoundMessage)) {
+        document.getElementById("booking-succes").innerHTML = "User not found";
+    } else {
+        document.getElementById("booking-succes").innerHTML = "Booking Success";
+    }
+})
+        .catch(error => {
+            // Handle error
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+</body>
+</html>

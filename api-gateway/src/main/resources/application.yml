@@ -1,0 +1,52 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8781/eureka
+
+spring:
+  application.name: api-gateway
+  cloud:
+    gateway:
+#      html routes
+      routes[4]:
+        id: html-booking-service
+        uri: lb://booking-service
+        predicates[0]: Path=/*
+
+#      Users routes
+      routes[0]:
+        id: users-service
+        uri: lb://users-service
+        predicates[0]: Path=/api/users/*
+#     Booking routes
+      routes[1]:
+        id: booking-service
+        uri: lb://booking-service
+        predicates[0]: Path=/api/booking/*
+#     Discovery server routes
+      routes[2]:
+        id: discovery-server
+        uri: http://localhost:8781
+        predicates[0]: Path=/eureka/web
+        filters: SetPath=/
+#     Discovery server static resources routes
+      routes[3]:
+        id: discovery-server-static
+        uri: http://localhost:8781
+        predicates[0]: Path=/eureka/**
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
+    org.springframework.cloud.gateway: TRACE
+
+
+    '[com.clairclarke.cabproject]': INFO
+
+  pattern:
+    file: "%d [%level] %c{1.} [%t] %m%n"
+  file:
+    path: /logs/
+    name: api_gateway.log
+
+
